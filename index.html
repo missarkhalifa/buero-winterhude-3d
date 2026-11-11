@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1b1d1f">
+<title>Büro Poelchaukamp 8–10 – 3D-Rundgang</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="loader"><div class="box"><div class="title">Büro Poelchaukamp 8–10</div><div class="bar"><i id="prog"></i></div><div id="ltext">Lade Modell …</div></div></div>
+<div id="hud">
+  <button id="modeBtn" type="button">Übersicht</button>
+  <div id="hint">Joystick: gehen · Wischen: umsehen</div>
+</div>
+<div id="room"></div>
+<div id="rooms"></div>
+<div id="legend"><b>Unsere Fläche (Mieter 1)</b>: farbig markiert, Räume 80, 81, 82 + Lager 83<br><span style="opacity:.75">Grau = restliche Etage (Treppenhaus, Flur, andere Mieter)</span></div>
+<div id="joy"><div id="joyKnob"></div></div>
+<script type="module" src="main.js"></script>
+</body>
+</html>

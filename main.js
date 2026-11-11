@@ -39,10 +39,10 @@ const prog = document.getElementById('prog'), ltext = document.getElementById('l
 const draco = new DRACOLoader().setDecoderPath('./vendor/draco/');
 const loader = new GLTFLoader().setDRACOLoader(draco);
 Promise.all([
-  fetch('./assets/collision.json?v=4').then(r => r.json()),
-  fetch('./assets/plan.json?v=4').then(r => r.json()),
-  fetch('./assets/furniture.json?v=4').then(r => r.json()).catch(() => ({ items: [] })),
-  new Promise((res, rej) => loader.load('./assets/office.glb?v=4', res, e => {
+  fetch('./assets/collision.json?v=5').then(r => r.json()),
+  fetch('./assets/plan.json?v=5').then(r => r.json()),
+  fetch('./assets/furniture.json?v=5').then(r => r.json()).catch(() => ({ items: [] })),
+  new Promise((res, rej) => loader.load('./assets/office.glb?v=5', res, e => {
     if (e.total) { prog.style.width = (100 * e.loaded / e.total).toFixed(0) + '%'; ltext.textContent = `Lade Modell … ${(e.loaded / 1048576).toFixed(1)} / ${(e.total / 1048576).toFixed(1)} MB`; }
   }, rej))
 ]).then(([col, pl, furn, gltf]) => {
@@ -227,7 +227,7 @@ function setMode(m) {
   ceilingMeshes.forEach(o => o.visible = !ov);
   outlines.visible = ov;
   outdoorMeshes.forEach(o => o.visible = !ov);
-  labelSprites.forEach(s => { s.visible = ov || s.userData.ours; if (s.userData.ours) s.position.y = ov ? 3.6 : s.userData.h; s.scale.copy(s.userData.base).multiplyScalar(ov ? 1.7 : 0.7); });
+  labelSprites.forEach(s => { s.visible = ov; if (s.userData.ours) s.position.y = ov ? 3.6 : s.userData.h; s.scale.copy(s.userData.base).multiplyScalar(ov ? 1.7 : 0.7); });
   if (ov) {
     camera.position.copy(B(-4.5, -9.5, 17)); orbit.target.copy(OV_TARGET); orbit.enabled = true; orbit.update();
     hint.textContent = isTouch ? 'Ziehen: drehen · Pinch: zoomen · zwei Finger: schieben' : 'Maus: drehen / zoomen / Rechtsklick schieben';

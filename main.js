@@ -25,7 +25,7 @@ const yawTo = (dx, dy) => Math.atan2(-dx, dy);
 const COLORS = { '80': '#f0a640', '81': '#4aa8ea', '82': '#5cc26a', '83': '#b48ee6' };
 const SPAWNS = {
   '80': { p: [7.7, 9.6], yaw: yawTo(-1, 0.05) },
-  '81': { p: [5.9, 3.9], yaw: yawTo(-1, -0.55) },
+  '81': { p: [5.6, 3.2], yaw: yawTo(-1, -0.45) },
   '82': { p: [7.5, 5.6], yaw: yawTo(0.55, -1) },
 };
 let boxes = [], plan = null, furnitureGroup = new THREE.Group(); scene.add(furnitureGroup);
@@ -39,10 +39,10 @@ const prog = document.getElementById('prog'), ltext = document.getElementById('l
 const draco = new DRACOLoader().setDecoderPath('./vendor/draco/');
 const loader = new GLTFLoader().setDRACOLoader(draco);
 Promise.all([
-  fetch('./assets/collision.json?v=2').then(r => r.json()),
-  fetch('./assets/plan.json?v=2').then(r => r.json()),
-  fetch('./assets/furniture.json?v=2').then(r => r.json()).catch(() => ({ items: [] })),
-  new Promise((res, rej) => loader.load('./assets/office.glb?v=2', res, e => {
+  fetch('./assets/collision.json?v=3').then(r => r.json()),
+  fetch('./assets/plan.json?v=3').then(r => r.json()),
+  fetch('./assets/furniture.json?v=3').then(r => r.json()).catch(() => ({ items: [] })),
+  new Promise((res, rej) => loader.load('./assets/office.glb?v=3', res, e => {
     if (e.total) { prog.style.width = (100 * e.loaded / e.total).toFixed(0) + '%'; ltext.textContent = `Lade Modell … ${(e.loaded / 1048576).toFixed(1)} / ${(e.total / 1048576).toFixed(1)} MB`; }
   }, rej))
 ]).then(([col, pl, furn, gltf]) => {
@@ -125,6 +125,9 @@ function buildOverlays(pl) {
     tint.rotation.x = -Math.PI / 2; tint.position.y = 0.015; tint.renderOrder = 2; outlines.add(tint);
     const inset = r.poly.map(p => B(p[0], p[1], 0.03)); inset.push(inset[0].clone());
     outlines.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(inset), new THREE.LineBasicMaterial({ color: col })));
+  }
+  for (const z of (pl.zones || [])) {   // Raum 81 zones (overview only)
+    const s = makeLabel(z.name, null, '#ffffff', 0.5); s.position.copy(B(z.p[0], z.p[1], 2.9)); Object.assign(s.userData, { ours: false, zone: true }); scene.add(s); labelSprites.push(s);
   }
   for (const c of pl.context) {
     if (c.box[2] - c.box[0] < 1.5) continue;

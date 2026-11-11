@@ -290,5 +290,36 @@
    1.85,
    2.75
   ]
- }
+ },
+ "zones": [
+  {
+   "name": "Büro",
+   "p": [
+    0.9,
+    2.3
+   ]
+  },
+  {
+   "name": "Werkstatt",
+   "p": [
+    3.9,
+    0.45
+   ]
+  },
+  {
+   "name": "Packen",
+   "p": [
+    3.9,
+    2.15
+   ]
+  },
+  {
+   "name": "Lager & Picking",
+   "p": [
+    4.8,
+    3.55
+   ]
+  }
+ ],
+ "furniture_note": "Raum 81 furnished for Carl's Paracord (furniture.py); rooms 80 and 82 empty"
 }

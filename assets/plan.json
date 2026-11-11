@@ -319,6 +319,41 @@
     4.8,
     3.55
    ]
+  },
+  {
+   "name": "Arbeiten",
+   "p": [
+    1.0,
+    8.0
+   ]
+  },
+  {
+   "name": "Lounge / TV",
+   "p": [
+    3.5,
+    10.2
+   ]
+  },
+  {
+   "name": "Essen",
+   "p": [
+    4.1,
+    6.1
+   ]
+  },
+  {
+   "name": "Küche",
+   "p": [
+    8.1,
+    10.8
+   ]
+  },
+  {
+   "name": "Bibliothek",
+   "p": [
+    2.45,
+    5.5
+   ]
   }
  ],
  "furniture_note": "Raum 81 furnished for Carl's Paracord (furniture.py); rooms 80 and 82 empty"

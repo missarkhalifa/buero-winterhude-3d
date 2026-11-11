@@ -24,7 +24,7 @@ const B = (x, y, h = 0) => new THREE.Vector3(x, h, -y);
 const yawTo = (dx, dy) => Math.atan2(-dx, dy);
 const COLORS = { '80': '#f0a640', '81': '#4aa8ea', '82': '#5cc26a', '83': '#b48ee6' };
 const SPAWNS = {
-  '80': { p: [7.7, 9.6], yaw: yawTo(-1, 0.05) },
+  '80': { p: [7.6, 8.7], yaw: yawTo(-1, 0.25) },
   '81': { p: [5.6, 3.2], yaw: yawTo(-1, -0.45) },
   '82': { p: [7.5, 5.6], yaw: yawTo(0.55, -1) },
 };
@@ -39,10 +39,10 @@ const prog = document.getElementById('prog'), ltext = document.getElementById('l
 const draco = new DRACOLoader().setDecoderPath('./vendor/draco/');
 const loader = new GLTFLoader().setDRACOLoader(draco);
 Promise.all([
-  fetch('./assets/collision.json?v=3').then(r => r.json()),
-  fetch('./assets/plan.json?v=3').then(r => r.json()),
-  fetch('./assets/furniture.json?v=3').then(r => r.json()).catch(() => ({ items: [] })),
-  new Promise((res, rej) => loader.load('./assets/office.glb?v=3', res, e => {
+  fetch('./assets/collision.json?v=4').then(r => r.json()),
+  fetch('./assets/plan.json?v=4').then(r => r.json()),
+  fetch('./assets/furniture.json?v=4').then(r => r.json()).catch(() => ({ items: [] })),
+  new Promise((res, rej) => loader.load('./assets/office.glb?v=4', res, e => {
     if (e.total) { prog.style.width = (100 * e.loaded / e.total).toFixed(0) + '%'; ltext.textContent = `Lade Modell … ${(e.loaded / 1048576).toFixed(1)} / ${(e.total / 1048576).toFixed(1)} MB`; }
   }, rej))
 ]).then(([col, pl, furn, gltf]) => {

@@ -39,10 +39,10 @@ const prog = document.getElementById('prog'), ltext = document.getElementById('l
 const draco = new DRACOLoader().setDecoderPath('./vendor/draco/');
 const loader = new GLTFLoader().setDRACOLoader(draco);
 Promise.all([
-  fetch('./assets/collision.json').then(r => r.json()),
-  fetch('./assets/plan.json').then(r => r.json()),
-  fetch('./assets/furniture.json').then(r => r.json()).catch(() => ({ items: [] })),
-  new Promise((res, rej) => loader.load('./assets/office.glb', res, e => {
+  fetch('./assets/collision.json?v=2').then(r => r.json()),
+  fetch('./assets/plan.json?v=2').then(r => r.json()),
+  fetch('./assets/furniture.json?v=2').then(r => r.json()).catch(() => ({ items: [] })),
+  new Promise((res, rej) => loader.load('./assets/office.glb?v=2', res, e => {
     if (e.total) { prog.style.width = (100 * e.loaded / e.total).toFixed(0) + '%'; ltext.textContent = `Lade Modell … ${(e.loaded / 1048576).toFixed(1)} / ${(e.total / 1048576).toFixed(1)} MB`; }
   }, rej))
 ]).then(([col, pl, furn, gltf]) => {
@@ -81,8 +81,8 @@ function plankTexture() {
   for (let i = 0; i < 12; i++) {
     const off = rnd() * pl;
     for (let k = -1; k < 3; k++) {
-      const y0 = off + k * pl, v = 150 + rnd() * 40;
-      g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(i * pw, y0, pw, pl);
+      const y0 = off + k * pl, v = 158 + rnd() * 62, w = rnd() * 0.08;
+      g.fillStyle = `rgb(${Math.min(255, v * (1.04 + w))},${v},${v * (0.90 - w)})`; g.fillRect(i * pw, y0, pw, pl);
       for (let s = 0; s < 22; s++) { const x = i * pw + rnd() * pw, a = 0.05 + rnd() * 0.08; g.fillStyle = rnd() > 0.5 ? `rgba(255,255,255,${a})` : `rgba(0,0,0,${a})`; g.fillRect(x, y0, 1 + rnd() * 2.5, pl); }
       g.fillStyle = 'rgba(40,40,40,0.75)'; g.fillRect(i * pw, y0, pw, 2);           // end joint
     }
@@ -96,7 +96,7 @@ function addPlankDetail(m) {
   m.onBeforeCompile = sh => {
     sh.uniforms.plankTex = { value: tex };
     sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vWp;').replace('#include <project_vertex>', '#include <project_vertex>\nvWp = (modelMatrix * vec4(transformed, 1.0)).xz;');
-    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWp; uniform sampler2D plankTex;').replace('#include <map_fragment>', '#include <map_fragment>\n diffuseColor.rgb *= 0.62 + 0.55 * texture2D(plankTex, vWp / 2.4).r;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vWp; uniform sampler2D plankTex;').replace('#include <map_fragment>', '#include <map_fragment>\n diffuseColor.rgb *= 0.45 + 0.75 * texture2D(plankTex, vWp / 2.4).rgb;');
   };
 }
 
@@ -121,7 +121,7 @@ function buildOverlays(pl) {
     // coloured floor outline + soft tint (dollhouse highlight)
     const pts = r.poly.map(p => B(p[0] + 0.0, p[1], 0.02)); pts.push(pts[0].clone());
     const shape = new THREE.Shape(r.poly.map(p => new THREE.Vector2(p[0], p[1])));
-    const tint = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.22, depthWrite: false }));
+    const tint = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.12, depthWrite: false }));
     tint.rotation.x = -Math.PI / 2; tint.position.y = 0.015; tint.renderOrder = 2; outlines.add(tint);
     const inset = r.poly.map(p => B(p[0], p[1], 0.03)); inset.push(inset[0].clone());
     outlines.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(inset), new THREE.LineBasicMaterial({ color: col })));
@@ -270,3 +270,4 @@ window.__walk = (f, s, secs) => { const t0 = performance.now(); return new Promi
 window.__look = (dyaw, dp = 0) => { yaw += dyaw; pitch += dp; };
 window.__goto = id => { if (mode !== 'fp') setMode('fp'); goto(id); };
 window.__mode = m => setMode(m);
+window.__place = (x, y, dx, dy) => { if (mode !== 'fp') setMode('fp'); pos.set(x, EYE, -y); yaw = yawTo(dx, dy); pitch = -0.04; };
